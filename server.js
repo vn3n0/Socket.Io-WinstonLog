@@ -10,7 +10,7 @@ app.get('/', function(req, res){
 
 http.listen(3000, function(){
   console.log('Comet v1 listening on *:3000');
-  logger.info('Server running');
+  logger.info('Server running')
 });
 
 var clients = {};
@@ -25,8 +25,9 @@ io.on('connection', function(socket){
     
     clients[userdata.username] = { socket: socket.id };
     var userok =  { nombre:datos.username , estado:'ok' };
-
+    logger.info(JSON.stringify( datos.username))
     io.sockets.connected[clients[userdata.username].socket].emit("add-user-ok", JSON.stringify( userok));
+    
   });
 
   socket.on('get-approval', function(data){
@@ -37,7 +38,7 @@ io.on('connection', function(socket){
     io.sockets.connected[clients[data.username].socket].emit("pending-approval",JSON.stringify(pending ));
     var supervisor = { nombre:datos.username , operacion:datos.operacion, estado:'need-approval' };
     io.emit("need-approval",  JSON.stringify(supervisor) );
-    
+
   });
 
 });
